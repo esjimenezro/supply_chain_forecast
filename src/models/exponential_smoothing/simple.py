@@ -52,19 +52,3 @@ def simple_exponential_smoothing(
     forecast_df.index.name = "Period"
 
     return forecast_df
-
-
-if __name__ == "__main__":
-    demand = np.array([
-        28, 19, 18, 13, 19, 16, 19, 18, 13, 16,
-        16, 11, 18, 15, 13, 15, 13, 11, 13, 10,
-        12
-    ])
-    moving_average_forecast_df = simple_exponential_smothing(
-        demand=demand,
-        alpha=0.4,
-        extra_periods=4
-    )
-    moving_average_forecast_df[["Demand", "Forecast"]].plot(
-        figsize=(8, 3), title="Simple smoothing", ylim=(0, 30)
-    )
