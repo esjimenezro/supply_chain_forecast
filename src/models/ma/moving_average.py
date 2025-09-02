@@ -50,19 +50,3 @@ def moving_average(
     forecast_df.index.name = "Period"
 
     return forecast_df
-
-
-if __name__ == "__main__":
-    demand = np.array([
-        28, 19, 18, 13, 19, 16, 19, 18, 13, 16,
-        16, 11, 18, 15, 13, 15, 13, 11, 13, 10,
-        12
-    ])
-    moving_average_forecast_df = moving_average(
-        demand=demand,
-        window_size=3,
-        extra_periods=4
-    )
-    moving_average_forecast_df[["Demand", "Forecast"]].plot(
-        figsize=(8, 3), title="Moving average", ylim=(0, 30)
-    )
