@@ -69,7 +69,7 @@ def double_exponential_smoothing_damped(
     demand: NDArray,
     alpha: float = 0.4,
     beta: float = 0.4,
-    phi: float = 0.8,
+    phi: float = 0.9,
     extra_periods: int = 1
 ) -> pd.DataFrame:
     """
@@ -106,7 +106,7 @@ def double_exponential_smoothing_damped(
 
     # Create the t+1 forecast until end of the historical period
     for t in range(1, historical_length):
-        forecast[t] = a[t - 1] + b[t - 1]
+        forecast[t] = a[t - 1] + phi * b[t - 1]
         a[t] = alpha * demand[t] + (1 - alpha) * (a[t - 1] + phi * b[t - 1])
         b[t] = beta * (a[t] - a[t - 1]) + (1 - beta) * phi * b[t - 1]
 
