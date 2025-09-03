@@ -25,64 +25,7 @@ if __name__ == "__main__":
     print(f"X_test shape: {X_test.shape}")
     print(f"y_test shape: {y_test.shape}")
     
-    # Random Forest Regressor model
-    forest = RandomForestRegressor(
-        bootstrap=True,
-        max_samples=0.95,
-        max_features=11,
-        min_samples_leaf=18,
-        max_depth=7,
-    )
-    forest.fit(X=X_train, y=y_train)
-    y_train_pred = forest.predict(X=X_train)
-    y_test_pred = forest.predict(X=X_test)
 
-    kpi_ml(
-        y_train=y_train,
-        y_train_pred=y_train_pred,
-        y_test=y_test,
-        y_test_pred=y_test_pred,
-        name="Random Forest Regressor"
-    )
-    # Hyperparameter optimization for Random Forest Regressor
-    max_depth = list(range(5, 11)) + [None]
-    min_samples_split = list(range(5, 20))
-    min_samples_leaf = list(range(2, 15))
-    max_features = list(range(3, 8))
-    bootstrap = [True]
-    max_samples = [0.7, 0.8, 0.9, 0.95, 1.0]
-
-    param_dist = {
-        "max_depth": max_depth[-3:],
-        "min_samples_split": min_samples_split[:10],
-        "min_samples_leaf": min_samples_leaf[:5],
-        "max_features": max_features,
-        "bootstrap": bootstrap,
-        "max_samples": max_samples,
-    }
-
-    forest = RandomForestRegressor(n_jobs=1, n_estimators=200)
-    random_search = RandomizedSearchCV(
-        estimator=forest,
-        param_distributions=param_dist,
-        n_jobs=-1,
-        cv=TimeSeriesSplit(n_splits=5),
-        verbose=1,
-        n_iter=100,  # 400
-        scoring="neg_mean_absolute_error",
-    )
-    random_search.fit(X=X_train, y=y_train)
-    print("Best parameters found: ", random_search.best_params_)
-
-    y_train_pred = random_search.predict(X=X_train)
-    y_test_pred = random_search.predict(X=X_test)
-    kpi_ml(
-        y_train=y_train,
-        y_train_pred=y_train_pred,
-        y_test=y_test,
-        y_test_pred=y_test_pred,
-        name="Random Forest Regressor with Random Search"
-    )
 
     # Feature importance for Random Forest Regressor
     forest: RandomForestRegressor = random_search.best_estimator_
