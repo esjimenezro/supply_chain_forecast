@@ -24,68 +24,7 @@ if __name__ == "__main__":
     print(f"y_train shape: {y_train.shape}")
     print(f"X_test shape: {X_test.shape}")
     print(f"y_test shape: {y_test.shape}")
-    # Linear Regression model
-    reg = LinearRegression()
-    reg.fit(X=X_train, y=y_train)
-    y_train_pred = reg.predict(X=X_train)
-    y_test_pred = reg.predict(X=X_test)
-
-    kpi_ml(
-        y_train=y_train,
-        y_train_pred=y_train_pred,
-        y_test=y_test,
-        y_test_pred=y_test_pred,
-        name="Linear Regression"
-    )
-    # Decision Tree Regressor model
-    tree = DecisionTreeRegressor(
-        max_depth=5,
-        min_samples_split=15,
-        min_samples_leaf=5,
-    )
-    tree.fit(X=X_train, y=y_train)
-    y_train_pred = tree.predict(X=X_train)
-    y_test_pred = tree.predict(X=X_test)
-
-    kpi_ml(
-        y_train=y_train,
-        y_train_pred=y_train_pred,
-        y_test=y_test,
-        y_test_pred=y_test_pred,
-        name="Decision Tree Regressor"
-    )
-    # Hyperparameter optimization for Decision Tree Regressor
-    max_depth = list(range(5, 11)) + [None]
-    min_samples_split = list(range(5, 20))
-    min_samples_leaf = list(range(2, 20))
-    param_dist = {
-        "max_depth": max_depth,
-        "min_samples_split": min_samples_split,
-        "min_samples_leaf": min_samples_leaf,
-    }
-
-    tree = DecisionTreeRegressor()
-    random_search = RandomizedSearchCV(
-        estimator=tree,
-        param_distributions=param_dist,
-        n_jobs=-1,
-        cv=TimeSeriesSplit(n_splits=5),
-        verbose=1,
-        n_iter=100,
-        scoring="neg_mean_absolute_error",
-    )
-    random_search.fit(X=X_train, y=y_train)
-    print("Best parameters found: ", random_search.best_params_)
-
-    y_train_pred = random_search.predict(X=X_train)
-    y_test_pred = random_search.predict(X=X_test)
-    kpi_ml(
-        y_train=y_train,
-        y_train_pred=y_train_pred,
-        y_test=y_test,
-        y_test_pred=y_test_pred,
-        name="Decision Tree Regressor with Random Search"
-    )
+    
     # Random Forest Regressor model
     forest = RandomForestRegressor(
         bootstrap=True,
